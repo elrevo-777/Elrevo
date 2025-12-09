@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elegant Revolution — Fashion Brand</title>
+  <meta name="description" content="Elegant Revolution — Modern fashion brand redefining style and elegance.">
+  <meta name="theme-color" content="#0f0f14">
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Elegant Revolution — Fashion Brand">
+  <meta property="og:description" content="Modern fashion brand dedicated to timeless design, premium quality, and bold individuality.">
+  <meta property="og:image" content="/og-image.jpg">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f0f14;
+      --card:#14141c;
+      --muted:#a1a1aa;
+      --accent:#eab308; /* gold accent for fashion */
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      --focus: 3px;
+      font-family: 'Inter', system-ui, -apple-system, Arial, sans-serif;
+      color-scheme: dark;
+      line-height:1.5;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#05050a 0%,var(--bg) 100%);color:#f3f4f6}
+    .container{max-width:1200px;margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#fde68a);
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:#1c1400;
+      font-size:18px;
+    }
+    .brand h1{font-size:20px;margin:0}
+    nav{display:flex;gap:18px}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    nav a:focus, nav a:hover{color:#fff;outline:none}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:32px;align-items:center;margin-top:40px}
+    .hero-left h2{font-size:40px;margin:0 0 14px}
+    .lead{color:var(--muted);margin-bottom:20px}
+    .cta{display:flex;gap:12px}
+    .btn{background:var(--accent);color:#1c1400;padding:12px 20px;border-radius:12px;text-decoration:none;font-weight:700;display:inline-block}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--muted)}
+    .btn:focus{outline:3px solid rgba(234,179,8,0.14);outline-offset:2px}
+    .card{background:var(--card);padding:22px;border-radius:var(--radius);box-shadow:0 8px 20px rgba(0,0,0,0.6)}
+    section{margin-top:42px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .feature{background:var(--glass);padding:18px;border-radius:12px}
+    .feature h3{margin:0 0 8px}
+    footer{margin-top:50px;padding:28px 0;color:var(--muted);text-align:center}
+    label{font-size:13px}
+    input,textarea{
+      width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;
+      font:inherit;
+    }
+    input:focus, textarea:focus{outline:2px solid rgba(234,179,8,0.18);outline-offset:2px}
+    .sr-only { position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden; }
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      nav{display:none}
+      .hero-left h2{font-size:32px}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:1fr}
+      .hero-left h2{font-size:26px}
+      .logo{width:48px;height:48px;font-size:16px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header role="banner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">ER</div>
+        <div>
+          <h1>Elegant Revolution</h1>
+          <div style="font-size:12px;color:var(--muted)">Modern Fashion House</div>
+        </div>
+      </div>
+
+      <nav aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#collections">Collections</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main role="main">
+      <div class="hero">
+        <div class="hero-left">
+          <h2>Redefining Style with Elegant Revolution</h2>
+          <p class="lead">Elegant Revolution is a modern fashion brand dedicated to timeless design, premium quality, and bold individuality. Discover a new era of elegance.</p>
+          <div class="cta" role="group" aria-label="Primary actions">
+            <a class="btn" href="#collections">View Collections</a>
+            <a class="btn ghost" href="#contact">Contact Us</a>
+          </div>
+        </div>
+
+        <aside class="card" aria-labelledby="brand-focus">
+          <h3 id="brand-focus" style="margin-top:0">Brand Focus</h3>
+          <ul style="color:var(--muted);padding-left:18px;margin:10px 0">
+            <li>Luxury & street-inspired fashion</li>
+            <li>Premium fabrics & craftsmanship</li>
+            <li>Men & Women collections</li>
+            <li>Seasonal drops</li>
+          </ul>
+        </aside>
+      </div>
+
+      <section id="about" aria-labelledby="about-heading">
+        <h3 id="about-heading">About Elegant Revolution</h3>
+        <p style="color:var(--muted)">Elegant Revolution is built on the idea of merging modern street style with timeless elegance. Our mission is to create clothing that empowers confidence and makes a statement in every environment.</p>
+      </section>
+
+      <section id="collections" aria-labelledby="collections-heading">
+        <h3 id="collections-heading">Our Collections</h3>
+        <p style="color:var(--muted)">Explore our seasonal fashion lines crafted for trendsetters and modern icons.</p>
+        <div class="grid" style="margin-top:16px">
+          <div class="feature"><h3>Men</h3><p style="color:var(--muted);margin:0">Urban wear, casual luxury & formal essentials.</p></div>
+          <div class="feature"><h3>Women</h3><p style="color:var(--muted);margin:0">Chic silhouettes, statement pieces & everyday elegance.</p></div>
+          <div class="feature"><h3>Accessories</h3><p style="color:var(--muted);margin:0">Bags, belts & fashion essentials.</p></div>
+        </div>
+      </section>
+
+      <section id="services" aria-labelledby="services-heading">
+        <h3 id="services-heading">Our Services</h3>
+        <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
+          <div class="card" style="flex:1;min-width:220px"><strong>Custom Orders</strong><p style="color:var(--muted);margin:8px 0 0">Tailored designs for exclusive clients.</p></div>
+          <div class="card" style="flex:1;min-width:220px"><strong>Wholesale</strong><p style="color:var(--muted);margin:8px 0 0">Bulk supply for boutiques & retailers.</p></div>
+          <div class="card" style="flex:1;min-width:220px"><strong>Brand Collaborations</strong><p style="color:var(--muted);margin:8px 0 0">Creative collaborations with influencers & brands.</p></div>
+        </div>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-heading">
+        <h3 id="contact-heading">Contact Elegant Revolution</h3>
+        <p style="color:var(--muted)">For orders, partnerships, or inquiries, email us at <a href="mailto:info@elrevo.com" style="color:var(--accent);text-decoration:none">info@elrevo.com</a></p>
+
+        <!--
+          For production use replace the action below with a real endpoint (Formspree, Netlify Forms, server route, etc.).
+          Example Formspree placeholder: action="https://formspree.io/f/your-form-id"
+        -->
+        <form class="card" action="mailto:hello@elrevo.com" method="get" enctype="text/plain" style="margin-top:12px" aria-label="Contact form">
+          <label for="name">Your Name</label>
+          <input id="name" name="name" placeholder="Your name" required>
+
+          <label for="email" style="display:block;margin-top:12px;margin-bottom:8px;color:var(--muted)">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+          <label for="message" style="display:block;margin-top:12px;margin-bottom:8px;color:var(--muted)">Message</label>
+          <textarea id="message" name="message" placeholder="I'm interested in your collection..." style="min-height:90px" required></textarea>
+
+          <div style="margin-top:12px;text-align:right">
+            <button type="submit" class="btn">Send</button>
+          </div>
+        </form>
+      </section>
+
+    </main>
+
+    <footer role="contentinfo">
+      <div style="font-weight:600">Elegant Revolution — Fashion Brand</div>
+      <div style="margin-top:8px;color:var(--muted)">© <span id="year"></span> Elegant Revolution. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <script>
+    // update year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Basic client-side validation enhancement (keeps default action as-is).
+    (function(){
+      const form = document.querySelector('form[aria-label="Contact form"]');
+      if (!form) return;
+      form.addEventListener('submit', function(e){
+        // simple email check (HTML required/type=email covers most cases)
+        const email = form.querySelector('input[type="email"]');
+        if (email && !email.value.includes('@')) {
+          e.preventDefault();
+          email.focus();
+          alert('Please enter a valid email address.');
+        }
+      }, false);
+    })();
+  </script>
+</body>
+</html>
