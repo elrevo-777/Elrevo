@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pioneer Trench — Elrevo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container section">
+    <nav class="breadcrumb"><a href="index.html">Home</a> / <a href="collections.html">Collections</a> / Pioneer Trench</nav>
+
+    <div class="product-grid">
+      <div class="product-gallery">
+        <img id="main-photo" src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="Pioneer Trench">
+        <div class="thumbs">
+          <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=800&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1549989474-efee31d5a2b8?auto=format&fit=crop&w=800&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="">
+        </div>
+      </div>
+
+      <div class="product-info">
+        <h1>Pioneer Trench</h1>
+        <p class="muted">Modernized trench with tailored volume.</p>
+        <p class="price">$549</p>
+
+        <form id="add-to-cart">
+          <label>Size
+            <select name="size" required>
+              <option value="">Choose</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+            </select>
+          </label>
+
+          <label>Color
+            <select name="color" required>
+              <option value="">Choose</option>
+              <option>Sand</option>
+              <option>Black</option>
+            </select>
+          </label>
+
+          <div class="qty">
+            <label>Quantity
+              <input type="number" name="qty" value="1" min="1">
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit">Add to Cart</button>
+            <a class="btn btn-ghost" href="contact.html">Ask a Stylist</a>
+          </div>
+        </form>
+
+        <section class="product-details">
+          <h3>Details</h3>
+          <ul>
+            <li>100% cotton blend exterior</li>
+            <li>Ethically sourced lining</li>
+            <li>Water-resistant finish</li>
+            <li>Made in limited runs</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
