@@ -1,3 +1,61 @@
+function injectHeadMeta(){
+  const head = document.head;
+
+  // Standard favicons
+  const linkIco = document.createElement('link');
+  linkIco.setAttribute('rel','icon');
+  linkIco.setAttribute('href','/assets/images/favicon.ico');
+  head.appendChild(linkIco);
+
+  const link32 = document.createElement('link');
+  link32.setAttribute('rel','icon');
+  link32.setAttribute('type','image/png');
+  link32.setAttribute('sizes','32x32');
+  link32.setAttribute('href','/assets/images/favicon-32.png');
+  head.appendChild(link32);
+
+  const apple = document.createElement('link');
+  apple.setAttribute('rel','apple-touch-icon');
+  apple.setAttribute('sizes','180x180');
+  apple.setAttribute('href','/assets/images/apple-touch-icon.png');
+  head.appendChild(apple);
+
+  // SVG fallback (keeps compatibility)
+  const svgIcon = document.createElement('link');
+  svgIcon.setAttribute('rel','icon');
+  svgIcon.setAttribute('href','/assets/images/logo.svg');
+  head.appendChild(svgIcon);
+
+  // theme & ms tile
+  const metaTheme = document.createElement('meta');
+  metaTheme.setAttribute('name','theme-color');
+  metaTheme.setAttribute('content','#d4af37');
+  head.appendChild(metaTheme);
+
+  const msTile = document.createElement('meta');
+  msTile.setAttribute('name','msapplication-TileImage');
+  msTile.setAttribute('content','/assets/images/logo-512.png');
+  head.appendChild(msTile);
+
+  // manifest
+  const manifestLink = document.createElement('link');
+  manifestLink.setAttribute('rel','manifest');
+  manifestLink.setAttribute('href','/assets/manifest.json');
+  head.appendChild(manifestLink);
+
+  // JSON-LD Organization (make sure domain and logo URL match your final domain)
+  const ld = {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"Elrevo",
+    "url":"https://elrevo.com/",
+    "logo":"https://elrevo.com/assets/images/logo-512.png"
+  };
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.text = JSON.stringify(ld);
+  head.appendChild(script);
+}
 // Enhanced JS: injects header/footer, favicons, manifest, JSON-LD for SEO, improved hero rotation and lazy-loading
 
 document.addEventListener('DOMContentLoaded', function(){
