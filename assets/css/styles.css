@@ -232,3 +232,35 @@ img{
 
   .section{padding:2.2rem 0}
 }
+/* ===== Header click & z-index FIX ===== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 9999; /* header sab se upar */
+}
+
+.menu-toggle {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+/* Hero section ko neeche rakho */
+.hero,
+.hero-slide {
+  position: relative;
+  z-index: 1;
+}
+
+/* Desktop */
+.menu-toggle {
+  display: none;
+}
+
+/* Mobile only */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+}
