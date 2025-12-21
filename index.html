@@ -35,7 +35,33 @@
 
 <!-- site content here -->
 
-  <div id="site-header"></div>
+  <header class="site-header">
+  <div class="header-inner">
+
+    <!-- LOGO -->
+    <a href="index.html" class="brand">
+      <img src="assets/images/logo.png" alt="Elegant Revolution">
+    </a>
+
+    <!-- NAV LINKS -->
+    <nav class="nav" id="mobileNav">
+      <a href="index.html">Home</a>
+      <a href="collections.html">Collections</a>
+      <a href="shop.html">Shop</a>
+      <a href="lookbook.html">Lookbook</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- RIGHT SIDE -->
+    <div class="header-actions">
+      <button class="menu-toggle">☰</button>
+      <a href="cart.html">Cart</a>
+    </div>
+
+  </div>
+  </header>
 
   <main class="site-main">
     <!-- Hero / Carousel -->
@@ -245,8 +271,10 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const db = getFirestore();
 
-document.getElementById("contactForm")
-.addEventListener("submit", async function (e) {
+const contactForm = document.getElementById("contactForm");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const name = document.getElementById("name").value;
@@ -272,6 +300,17 @@ document.getElementById("contactForm")
     console.error(error);
   }
 });
-  </script>
+}
+      <script>
+  const menuBtn = document.querySelector('.menu-toggle');
+  const nav = document.getElementById('mobileNav');
+
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', () => {
+      nav.classList.toggle('nav-open');
+    });
+  }
+</script>
+  
 </body>
 </html>
