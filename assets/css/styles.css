@@ -20,50 +20,51 @@ body {
 }
 
 /* --- LOGO FIX --- */
-/* Is se logo apni sahi jagah aur size mein rahega */
-.brand img {
-  height: 50px; /* Logo ki height choti kar di */
-  width: auto;
-  max-width: 150px;
-  display: block;
-  margin: 0 auto; /* Mobile par center karne ke liye */
+/* Desktop aur Mobile dono par logo ko control karega */
+.brand img, .site-header img, img[src*="logo"] {
+  height: 60px !important; /* Logo ki height yahan se kam ki gayi hai */
+  width: auto !important;
+  max-width: 180px !important;
+  display: block !important;
+  margin: 10px auto !important;
 }
 
-/* --- HEADER & NAV FIX --- */
+/* --- HEADER & NAVIGATION --- */
 .site-header {
+  background: rgba(0, 0, 0, 0.9);
   padding: 1rem 0;
-  background: rgba(0,0,0,0.8);
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .nav {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 10px;
+  gap: 20px;
+  margin-top: 15px;
 }
 
 .nav a {
-  color: var(--text);
-  text-decoration: none;
+  color: var(--text) !important; /* Purple/Blue rang khatam karne ke liye */
+  text-decoration: none !important;
   font-size: 0.85rem;
   font-weight: 500;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-/* --- RESPONSIVE IMAGES --- */
-/* Baki saari images ko responsive rakha hai */
-.site-main img:not(.brand img) {
-  max-width: 100%;
-  height: auto;
-  display: block;
+.nav a:hover {
+  color: var(--accent) !important;
 }
 
 /* --- HERO SECTION --- */
 .hero {
   display: flex;
   flex-direction: column;
-  min-height: 400px;
+  min-height: 70vh; /* Desktop par height behtar dikhegi */
 }
 
 .hero-slide {
@@ -76,63 +77,72 @@ body {
 }
 
 .hero-content {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 1.5rem;
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 3rem;
+  border-radius: 12px;
   text-align: center;
-  width: 90%;
+  max-width: 600px;
 }
 
-.hero-content h1 {
-  font-size: 1.8rem;
-  margin: 0;
-}
-
-/* --- GRID & CARDS --- */
+/* --- GRID & IMAGES --- */
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1rem;
+  padding: 2rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .card {
-  height: 300px;
+  height: 400px; /* Desktop par cards bade honge */
   background-size: cover;
   background-position: center;
   border-radius: 12px;
   display: flex;
   align-items: flex-end;
   text-decoration: none;
+  overflow: hidden;
 }
 
 .card-overlay {
   background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  padding: 1rem;
+  padding: 1.5rem;
   width: 100%;
-  color: white;
 }
 
-/* --- BUTTON --- */
+/* --- MOBILE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+  .hero { min-height: 450px; }
+  .hero-content { padding: 1.5rem; width: 90%; }
+  .hero-content h1 { font-size: 1.8rem; }
+  .card { height: 300px; }
+  .brand img { height: 50px !important; } /* Mobile par logo thora aur chota */
+}
+
+/* --- BUTTONS --- */
 .btn {
   background: var(--accent);
-  color: #000;
-  padding: 0.7rem 1.2rem;
+  color: #0b0b0b;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
   text-decoration: none;
-  font-weight: bold;
-  border-radius: 5px;
+  font-weight: 600;
   display: inline-block;
   margin-top: 10px;
 }
 
-/* --- MOBILE SPECIFIC --- */
-@media (max-width: 600px) {
-  .hero { min-height: 300px; }
-  .nav { gap: 10px; }
-  .nav a { font-size: 0.75rem; }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
 }
