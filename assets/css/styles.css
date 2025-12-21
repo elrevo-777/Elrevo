@@ -11,21 +11,20 @@
 }
 
 * { box-sizing: border-box; }
-
 html, body { 
-    height: 100%; 
-    margin: 0; 
-    background: #0b0b0b;
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--text);
-    overflow-x: hidden;
+  margin: 0; 
+  padding: 0;
+  background: #0b0b0b;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text);
+  overflow-x: hidden; /* Mobile pe screen hilegi nahi */
 }
 
-/* --- LOGO & HEADER (Premium Fix) --- */
+/* --- LOGO & HEADER (Brand standard) --- */
 .site-header {
   background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(10px);
-  padding: 1rem 0;
+  backdrop-filter: blur(12px);
+  padding: 10px 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -41,9 +40,9 @@ html, body {
   padding: 0 1.5rem;
 }
 
-/* Logo ko har haal mein target karne ke liye */
-.brand img, #site-header img, img[src*="logo"] {
-  height: 45px !important; /* Standard Premium Size */
+/* Logo Fix: Forcefully resizing */
+.brand img, #site-header img, img[src*="logo"], .site-header .brand img {
+  height: 45px !important; /* Premium brand size */
   width: auto !important;
   display: block;
 }
@@ -52,118 +51,113 @@ html, body {
 .nav a {
   color: var(--text) !important;
   text-decoration: none;
-  font-weight: 500;
   font-size: 0.85rem;
-  letter-spacing: 1px;
+  font-weight: 500;
   text-transform: uppercase;
-  transition: color var(--transition);
+  letter-spacing: 1px;
 }
 .nav a:hover { color: var(--accent) !important; }
 
-/* --- HERO SECTION (Desktop & Mobile Friendly) --- */
+/* --- HERO SECTION (Desktop & Mobile Fit) --- */
 .hero {
   position: relative;
   height: 80vh; 
-  min-height: 500px;
+  min-height: 450px;
   display: flex;
 }
 
 .hero-slide {
   flex: 1;
   background-size: cover;
-  background-position: center;
+  background-position: center; /* Picture face/center pe rahegi */
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
 }
 
-.hero-slide .hero-content {
+.hero-content {
   background: rgba(0,0,0,0.7);
   padding: 3rem;
   border-radius: var(--radius);
-  margin-left: 10%; /* Desktop spacing */
-  max-width: 550px;
-  border: 1px solid rgba(212,175,55,0.2);
+  margin-left: 8%;
+  max-width: 500px;
+  border-left: 3px solid var(--accent);
 }
 
 .hero-content h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 3.5rem;
-  margin: 0 0 1rem;
-  color: #fff;
+  font-size: 3.2rem;
+  margin: 0 0 10px;
+  line-height: 1.1;
 }
 
-/* --- GRID & COLLECTIONS --- */
-.container { max-width: var(--max-width); margin: 0 auto; padding: 4rem 1.5rem; }
+/* --- THE GRID (3 Columns on Desktop, 1 on Mobile) --- */
+.container { 
+  max-width: var(--max-width); 
+  margin: 0 auto; 
+  padding: 4rem 1.5rem; 
+}
 
 .grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(3, 1fr); /* Desktop default */
+  grid-template-columns: repeat(3, 1fr); /* Premium 3-column layout */
 }
 
 .card {
   position: relative;
-  height: 450px;
+  height: 480px; /* Standard portrait height */
   background-size: cover;
   background-position: center;
   border-radius: var(--radius);
-  overflow: hidden;
   display: flex;
   align-items: flex-end;
-  box-shadow: var(--shadow);
   transition: transform var(--transition);
+  text-decoration: none;
 }
 
-.card:hover { transform: translateY(-10px); }
+.card:hover { transform: translateY(-8px); }
 
 .card-overlay {
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.9));
+  background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
   padding: 2rem;
   width: 100%;
 }
 
-/* --- MOBILE RESPONSIVE OVERRIDES --- */
-@media (max-width: 1024px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
-    .hero-slide .hero-content { margin-left: 5%; }
+/* --- MOBILE RESPONSIVE FIXES --- */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-content { margin-left: 2rem; padding: 2rem; }
 }
 
-@media (max-width: 768px) {
-    .grid { grid-template-columns: 1fr; }
-    .hero { height: 60vh; }
-    .hero-slide .hero-content { 
-        margin: 0 auto; 
-        padding: 2rem; 
-        width: 90%; 
-        text-align: center;
-    }
-    .hero-content h1 { font-size: 2.2rem; }
-    
-    /* Mobile Navigation */
-    .nav { gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
-    .nav a { font-size: 11px; }
-    
-    .brand img { height: 35px !important; } /* Mobile logo standard */
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr !important; } /* Pictures ek ke niche ek ayengi */
+  
+  .hero { height: 65vh; }
+  .hero-content {
+    margin: 0 auto;
+    width: 90%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-left: none;
+    border-top: 3px solid var(--accent);
+  }
+  .hero-content h1 { font-size: 2rem; }
+  
+  .card { height: 380px; } /* Mobile pe cards thore chote */
+  
+  .brand img { height: 35px !important; }
+  .nav { display: none; } /* Mobile menu toggle handle karega JS */
 }
 
 /* Buttons */
 .btn {
   background: var(--accent);
   color: #000;
-  padding: 1rem 2rem;
-  border-radius: var(--radius);
+  padding: 12px 24px;
+  border-radius: 4px;
   text-decoration: none;
   font-weight: 700;
-  display: inline-block;
   text-transform: uppercase;
   font-size: 0.8rem;
-  letter-spacing: 1px;
-}
-
-.highlight-media {
-  height: 500px;
-  background-size: cover;
-  background-position: center;
-  border-radius: var(--radius);
 }
