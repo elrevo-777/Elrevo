@@ -54,7 +54,6 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/main.js" defer></script>
   <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -73,31 +72,35 @@ const db = getFirestore(app);
 
 const contactForm = document.getElementById("contactForm");
 
-contactForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+if (contactForm) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const subject = document.getElementById("subject").value;
-  const message = document.getElementById("message").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const subject = document.getElementById("subject").value;
+    const message = document.getElementById("message").value;
 
-  try {
-    await addDoc(collection(db, "contacts"), {
-      name,
-      email,
-      subject,
-      message,
-      createdAt: serverTimestamp(),
-      status: "new"
-    });
+    try {
+      await addDoc(collection(db, "contacts"), {
+        name,
+        email,
+        subject,
+        message,
+        createdAt: serverTimestamp(),
+        status: "new"
+      });
 
-    alert("Message sent successfully ✅");
-    contactForm.reset();
-  } catch (error) {
-    alert("Something went wrong ❌");
-    console.error(error);
-  }
-});
+      alert("Message sent successfully ✅");
+      contactForm.reset();
+    } catch (error) {
+      alert("Something went wrong ❌");
+      console.error(error);
+    }
+  });
+}
+</script>
+
   </script>
   
 </body>
