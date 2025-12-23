@@ -43,7 +43,9 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     await signInWithEmailAndPassword(auth, email, password);
     window.location.href = "dashboard.html";
   } catch (err) {
-    document.getElementById("error").innerText = "Invalid login ❌";
+    document.getElementById("error").innerText = err.code + " | " + err.message;
+console.error(err);
+
   }
 });
 </script>
