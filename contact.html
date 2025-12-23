@@ -21,21 +21,27 @@
     </header>
 
     <div class="contact-grid">
-      <form id="contact-form" class="contact-form">
-        <label>Name
-          <input type="text" name="name" required>
-        </label>
-        <label>Email
-          <input type="email" name="email" required>
-        </label>
-        <label>Subject
-          <input type="text" name="subject">
-        </label>
-        <label>Message
-          <textarea name="message" rows="6" required></textarea>
-        </label>
-        <button class="btn" type="submit">Send Message</button>
-      </form>
+      <form id="contactForm" class="contact-form">
+
+  <label>Name
+    <input type="text" id="name" name="name" required>
+  </label>
+
+  <label>Email
+    <input type="email" id="email" name="email" required>
+  </label>
+
+  <label>Subject
+    <input type="text" id="subject" name="subject">
+  </label>
+
+  <label>Message
+    <textarea id="message" name="message" rows="6" required></textarea>
+  </label>
+
+  <button class="btn" type="submit">Send Message</button>
+</form>
+
 
       <aside class="contact-info">
         <h3>Visit Us</h3>
@@ -49,5 +55,50 @@
 
   <div id="site-footer"></div>
   <script src="assets/js/main.js" defer></script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA4t8gqUO7KqeRNKMIQNmLmf9sFW",
+  authDomain: "elegant-revolution.firebaseapp.com",
+  projectId: "elegant-revolution",
+  storageBucket: "elegant-revolution.appspot.com",
+  messagingSenderId: "775296660246",
+  appId: "1:775296660246:web:d24fdc77e6dd7c227c1637"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const contactForm = document.getElementById("contactForm");
+
+contactForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const subject = document.getElementById("subject").value;
+  const message = document.getElementById("message").value;
+
+  try {
+    await addDoc(collection(db, "contacts"), {
+      name,
+      email,
+      subject,
+      message,
+      createdAt: serverTimestamp(),
+      status: "new"
+    });
+
+    alert("Message sent successfully ✅");
+    contactForm.reset();
+  } catch (error) {
+    alert("Something went wrong ❌");
+    console.error(error);
+  }
+});
+  </script>
+  
 </body>
 </html>
