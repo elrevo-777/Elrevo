@@ -9,23 +9,25 @@
 <h2>Admin Login</h2>
 
 <form id="loginForm">
-  <input type="email" id="email" placeholder="Admin Email" required><br><br>
+  <input type="email" id="email" placeholder="Email" required><br><br>
   <input type="password" id="password" placeholder="Password" required><br><br>
   <button type="submit">Login</button>
 </form>
 
-<p id="errorMsg" style="color:red;"></p>
+<p id="error" style="color:red;"></p>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword }
+import { getAuth, signInWithEmailAndPassword } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  appId: "PASTE_YOUR_APP_ID"
+  apiKey: "AIzaSyA4t8gqUO7KqeRNKMIQNmLmf9sFW",
+  authDomain: "elegant-revolution.firebaseapp.com",
+  projectId: "elegant-revolution",
+  storageBucket: "elegant-revolution.appspot.com",
+  messagingSenderId: "775296660246",
+  appId: "1:775296660246:web:d24fdc77e6dd7c227c1637"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -40,11 +42,12 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     window.location.href = "dashboard.html";
-  } catch (error) {
-    document.getElementById("errorMsg").innerText = "Login failed";
+  } catch (err) {
+    document.getElementById("error").innerText = "Invalid login ❌";
   }
 });
 </script>
 
 </body>
 </html>
+
