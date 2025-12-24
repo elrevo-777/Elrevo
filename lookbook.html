@@ -1,35 +1,321 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lookbook — Elrevo</title>
+
+  <!-- Favicon -->
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --dark: #1a1a1a;
+      --gray: #666;
+      --light-gray: #f8f8f8;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: var(--white);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header with Hamburger Menu */
+    .site-header {
+      padding: 25px 0;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand img {
+      height: 50px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 35px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid #eee;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 30px 20px;
+        gap: 25px;
+      }
+      .nav.nav-open { display: flex; }
+      .menu-toggle { display: block; }
+    }
+
+    /* Lookbook Page */
+    .section {
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .section-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    .section-header p {
+      font-size: 22px;
+      color: var(--gray);
+      max-width: 800px;
+      margin: 0 auto 80px;
+    }
+
+    /* Masonry Grid - Premium Lookbook Style */
+    .lookbook-masonry {
+      column-count: 4;
+      column-gap: 20px;
+      padding: 0 20px;
+    }
+
+    .lookbook-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+    }
+
+    .lookbook-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .lookbook-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .lookbook-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .lookbook-caption {
+      padding: 20px;
+      background: var(--white);
+      text-align: center;
+    }
+
+    .lookbook-caption h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .lookbook-caption p {
+      color: var(--gray);
+      font-size: 15px;
+    }
+
+    /* Responsive Masonry */
+    @media (max-width: 1200px) {
+      .lookbook-masonry { column-count: 3; }
+    }
+    @media (max-width: 900px) {
+      .lookbook-masonry { column-count: 2; }
+    }
+    @media (max-width: 600px) {
+      .lookbook-masonry { column-count: 1; }
+      .section-header h1 { font-size: 48px; }
+    }
+  </style>
 </head>
 <body>
-  <div id="site-header"></div>
+
+  <!-- Header with Hamburger Menu -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/logo.svg" alt="Elrevo">
+      </a>
+
+      <nav class="nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="collections.html">Collections</a>
+        <a href="shop.html">Shop</a>
+        <a href="lookbook.html" class="active">Lookbook</a>
+        <a href="blog.html">Journal</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+  </header>
 
   <main class="container section">
     <header class="section-header">
       <h1>Lookbook</h1>
-      <p>Visual stories from our latest season.</p>
+      <p>Visual stories from our latest season — timeless elegance meets modern sophistication.</p>
     </header>
 
-    <div class="masonry">
-      <img src="https://images.unsplash.com/photo-1520975914503-1c9b9b0d3f9f?auto=format&fit=crop&w=1200&q=80" alt="">
-      <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80" alt="">
-      <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1200&q=80" alt="">
-      <img src="https://images.unsplash.com/photo-1519336555923-5960f6117793?auto=format&fit=crop&w=1200&q=80" alt="">
-      <img src="https://images.unsplash.com/photo-1505691723518-34d456b2b3a8?auto=format&fit=crop&w=1200&q=80" alt="">
+    <div class="lookbook-masonry">
+      <!-- Premium Lookbook Images with Captions -->
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1539109136881-3d0363db6a8d?auto=format&fit=crop&w=800&q=80" alt="Woman in black evening gown">
+        <div class="lookbook-caption">
+          <h3>Evening Elegance</h3>
+          <p>Silk gown with structured silhouette</p>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80" alt="Man in tailored navy suit">
+        <div class="lookbook-caption">
+          <h3>Modern Tailoring</h3>
+          <p>Navy wool suit with contemporary cut</p>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Model in white dress">
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1581338832823-9f6e975bac1f?auto=format&fit=crop&w=800&q=80" alt="Couple in formal wear">
+        <div class="lookbook-caption">
+          <h3>Harmony</h3>
+          <p>Coordinated looks for modern couples</p>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Woman in bold red dress">
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1499939667766-4afceb292d05?auto=format&fit=crop&w=800&q=80" alt="Man in classic black suit">
+        <div class="lookbook-caption">
+          <h3>Signature Black</h3>
+          <p>Timeless tuxedo with modern details</p>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c5d4d4?auto=format&fit=crop&w=800&q=80" alt="Woman in trench coat">
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1519742866993-66d3cfef8401?auto=format&fit=crop&w=800&q=80" alt="Atelier craftsmanship">
+        <div class="lookbook-caption">
+          <h3>Behind the Seams</h3>
+          <p>Artisans at work in our atelier</p>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1537832816519-689ad163238b?auto=format&fit=crop&w=800&q=80" alt="Woman in neutral tones">
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1505028106030-947c1e50547f?auto=format&fit=crop&w=800&q=80" alt="Man in casual luxury">
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1519415380206-908ed1c53bb7?auto=format&fit=crop&w=800&q=80" alt="Runway finale">
+        <div class="lookbook-caption">
+          <h3>Season Finale</h3>
+          <p>Closing look from our latest presentation</p>
+        </div>
+      </div>
+
+      <div class="lookbook-item">
+        <img src="https://images.unsplash.com/photo-1617113935556-0a16a8e2f603?auto=format&fit=crop&w=800&q=80" alt="Accessories detail">
+      </div>
     </div>
   </main>
 
-  <div id="site-footer"></div>
-  <script src="assets/js/main.js" defer></script>
+  <!-- Hamburger Menu Script -->
+  <script>
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('mobileNav');
+
+    if (menuBtn && nav) {
+      menuBtn.addEventListener('click', () => {
+        nav.classList.toggle('nav-open');
+        menuBtn.textContent = nav.classList.contains('nav-open') ? '×' : '☰';
+      });
+    }
+
+    // Highlight current page
+    const currentPage = location.pathname.split("/").pop() || "index.html";
+    document.querySelectorAll('.nav a').forEach(link => {
+      if (link.getAttribute('href') === currentPage || (currentPage === "" && link.getAttribute('href') === "index.html")) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+
 </body>
 </html>
