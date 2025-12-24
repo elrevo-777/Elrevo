@@ -1,18 +1,215 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Collections — Elrevo</title>
+
+  <!-- Favicon -->
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --dark: #1a1a1a;
+      --gray: #666;
+      --light-gray: #f8f8f8;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: var(--white);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header with Hamburger Menu */
+    .site-header {
+      padding: 25px 0;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand img {
+      height: 50px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 35px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid #eee;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 30px 20px;
+        gap: 25px;
+      }
+      .nav.nav-open { display: flex; }
+      .menu-toggle { display: block; }
+    }
+
+    /* Collections Page */
+    .section {
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .section-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 54px;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+
+    .section-header p {
+      font-size: 20px;
+      color: var(--gray);
+      max-width: 800px;
+      margin: 0 auto 60px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+    }
+
+    .product-card {
+      display: block;
+      text-decoration: none;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .product-details {
+      padding: 25px;
+      background: var(--white);
+      text-align: center;
+    }
+
+    .product-details h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .muted {
+      color: var(--gray);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .section-header h1 { font-size: 44px; }
+      .section-header p { font-size: 18px; }
+      .product-card img { height: 400px; }
+    }
+  </style>
 </head>
 <body>
-  <div id="site-header"></div>
+
+  <!-- Header with Hamburger Menu -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/logo.svg" alt="Elrevo">
+      </a>
+
+      <nav class="nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="collections.html" class="active">Collections</a>
+        <a href="shop.html">Shop</a>
+        <a href="lookbook.html">Lookbook</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+  </header>
 
   <main class="container section">
     <header class="section-header">
@@ -21,10 +218,10 @@
     </header>
 
     <div class="grid product-grid">
-      <!-- Sample product card -->
+      <!-- Product Cards -->
       <article class="product-card">
         <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="Pioneer Trench">
           <div class="product-details">
             <h3>Pioneer Trench</h3>
             <p class="muted">From $549</p>
@@ -34,7 +231,7 @@
 
       <article class="product-card">
         <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80" alt="Arc Knit">
           <div class="product-details">
             <h3>Arc Knit</h3>
             <p class="muted">From $210</p>
@@ -44,7 +241,7 @@
 
       <article class="product-card">
         <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Signature Blazer">
           <div class="product-details">
             <h3>Signature Blazer</h3>
             <p class="muted">From $680</p>
@@ -54,7 +251,7 @@
 
       <article class="product-card">
         <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1520975914503-1c9b9b0d3f9f?auto=format&fit=crop&w=1200&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1520975914503-1c9b9b0d3f9f?auto=format&fit=crop&w=1200&q=80" alt="Leather Cross">
           <div class="product-details">
             <h3>Leather Cross</h3>
             <p class="muted">From $320</p>
@@ -64,7 +261,26 @@
     </div>
   </main>
 
-  <div id="site-footer"></div>
-  <script src="assets/js/main.js" defer></script>
+  <!-- Hamburger Menu Script -->
+  <script>
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('mobileNav');
+
+    if (menuBtn && nav) {
+      menuBtn.addEventListener('click', () => {
+        nav.classList.toggle('nav-open');
+        menuBtn.textContent = nav.classList.contains('nav-open') ? '×' : '☰';
+      });
+    }
+
+    // Highlight current page
+    const currentPage = location.pathname.split("/").pop() || "index.html";
+    document.querySelectorAll('.nav a').forEach(link => {
+      if (link.getAttribute('href') === currentPage || (currentPage === "" && link.getAttribute('href') === "index.html")) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+
 </body>
 </html>
