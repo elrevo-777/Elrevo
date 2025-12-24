@@ -1,75 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shop — Elrevo</title>
+
+  <!-- Favicon (same as others) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --dark: #1a1a1a;
+      --gray: #666;
+      --light-gray: #f8f8f8;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: var(--white);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header with Hamburger Menu */
+    .site-header {
+      padding: 25px 0;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand img {
+      height: 50px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 35px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid #eee;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 30px 20px;
+        gap: 25px;
+      }
+      .nav.nav-open { display: flex; }
+      .menu-toggle { display: block; }
+    }
+
+    /* Shop Page Layout */
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 60px;
+      padding: 100px 0;
+    }
+
+    .filters {
+      background: var(--light-gray);
+      padding: 30px;
+      border-radius: 12px;
+      height: fit-content;
+      position: sticky;
+      top: 120px;
+    }
+
+    .filters h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin-bottom: 25px;
+      color: var(--dark);
+    }
+
+    .filter-group label {
+      display: block;
+      margin: 15px 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .filter-group input {
+      margin-right: 10px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 54px;
+      margin-bottom: 20px;
+    }
+
+    .section-header p {
+      font-size: 20px;
+      color: var(--gray);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+    }
+
+    .product-card {
+      display: block;
+      text-decoration: none;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .product-details {
+      padding: 25px;
+      background: var(--white);
+      text-align: center;
+    }
+
+    .product-details h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .muted {
+      color: var(--gray);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 992px) {
+      .shop-layout {
+        grid-template-columns: 1fr;
+      }
+      .filters {
+        position: static;
+        margin-bottom: 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section-header h1 { font-size: 44px; }
+      .product-card img { height: 400px; }
+    }
+  </style>
 </head>
 <body>
-  <div id="site-header"></div>
 
-  <main class="container section">
+  <!-- Header with Hamburger Menu -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/logo.svg" alt="Elrevo">
+      </a>
+
+      <nav class="nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="collections.html">Collections</a>
+        <a href="shop.html" class="active">Shop</a>
+        <a href="lookbook.html">Lookbook</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
     <header class="section-header">
       <h1>Shop</h1>
-      <p>Shop the edit. Filters and cart can be added when integrated with a backend.</p>
+      <p>Shop the edit. Discover our seasonless wardrobe essentials and statement pieces.</p>
     </header>
 
-    <aside class="filters">
-      <h4>Filters</h4>
-      <div class="filter-group">
-        <label><input type="checkbox"> New</label>
-        <label><input type="checkbox"> Bestsellers</label>
-        <label><input type="checkbox"> Organic fabrics</label>
+    <div class="shop-layout">
+      <!-- Filters Sidebar -->
+      <aside class="filters">
+        <h4>Filters</h4>
+        <div class="filter-group">
+          <label><input type="checkbox"> New Arrivals</label>
+          <label><input type="checkbox"> Bestsellers</label>
+          <label><input type="checkbox"> Organic Fabrics</label>
+          <label><input type="checkbox"> Men</label>
+          <label><input type="checkbox"> Women</label>
+          <label><input type="checkbox"> Accessories</label>
+        </div>
+      </aside>
+
+      <!-- Product Grid -->
+      <div class="product-grid">
+        <article class="product-card">
+          <a href="product.html">
+            <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="Pioneer Trench">
+            <div class="product-details">
+              <h3>Pioneer Trench</h3>
+              <p class="muted">From $549</p>
+            </div>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <a href="product.html">
+            <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80" alt="Arc Knit">
+            <div class="product-details">
+              <h3>Arc Knit</h3>
+              <p class="muted">From $210</p>
+            </div>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <a href="product.html">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Signature Blazer">
+            <div class="product-details">
+              <h3>Signature Blazer</h3>
+              <p class="muted">From $680</p>
+            </div>
+          </a>
+        </article>
+
+        <article class="product-card">
+          <a href="product.html">
+            <img src="https://images.unsplash.com/photo-1549989474-efee31d5a2b8?auto=format&fit=crop&w=1200&q=80" alt="Leather Cross">
+            <div class="product-details">
+              <h3>Leather Cross</h3>
+              <p class="muted">From $320</p>
+            </div>
+          </a>
+        </article>
       </div>
-    </aside>
-
-    <div class="grid product-grid">
-      <!-- Repeat product cards -->
-      <article class="product-card">
-        <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="">
-          <div class="product-details">
-            <h3>Pioneer Trench</h3>
-            <p class="muted">From $549</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="product-card">
-        <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80" alt="">
-          <div class="product-details">
-            <h3>Arc Knit</h3>
-            <p class="muted">From $210</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="product-card">
-        <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="">
-          <div class="product-details">
-            <h3>Signature Blazer</h3>
-            <p class="muted">From $680</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="product-card">
-        <a href="product.html">
-          <img src="https://images.unsplash.com/photo-1549989474-efee31d5a2b8?auto=format&fit=crop&w=1200&q=80" alt="">
-          <div class="product-details">
-            <h3>Leather Cross</h3>
-            <p class="muted">From $320</p>
-          </div>
-        </a>
-      </article>
     </div>
   </main>
 
-  <div id="site-footer"></div>
-  <script src="assets/js/main.js" defer></script>
+  <!-- Hamburger Menu Script -->
+  <script>
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('mobileNav');
+
+    if (menuBtn && nav) {
+      menuBtn.addEventListener('click', () => {
+        nav.classList.toggle('nav-open');
+        menuBtn.textContent = nav.classList.contains('nav-open') ? '×' : '☰';
+      });
+    }
+
+    // Highlight current page
+    const currentPage = location.pathname.split("/").pop() || "index.html";
+    document.querySelectorAll('.nav a').forEach(link => {
+      if (link.getAttribute('href') === currentPage || (currentPage === "" && link.getAttribute('href') === "index.html")) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+
 </body>
 </html>
