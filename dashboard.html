@@ -2,230 +2,380 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages Dashboard | Elrevo</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    h2 { color: #333; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-    th { background: #4CAF50; color: white; }
-    tr:nth-child(even) { background: #f2f2f2; }
-    tr:hover { background: #e8f5e9; }
-    
-    /* Status Badges - Ab properly dikhega */
-    .status-unread {
-      background: #4CAF50; color: white; font-weight: bold;
-      padding: 6px 12px; border-radius: 20px; font-size: 14px; text-align: center; display: inline-block;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
     }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      font-size: 32px;
+      color: #ffd700;
+      margin: 0;
+    }
+
+    #logout {
+      background: linear-gradient(to right, #ff9800, #ffc107);
+      color: #0f172a;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    #logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+    }
+
+    #searchInput {
+      padding: 14px 16px;
+      width: 400px;
+      max-width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.6);
+      color: white;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: #ffd700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    th {
+      background: #1e293b;
+      color: #ffd700;
+      padding: 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    tr:hover {
+      background: rgba(255, 215, 0, 0.05);
+    }
+
+    /* Status Badges - Perfect Fix */
+    .status-new {
+      background: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 14px;
+      display: inline-block;
+    }
+
     .status-read {
-      background: #9e9e9e; color: white;
-      padding: 6px 12px; border-radius: 20px; font-size: 14px; text-align: center; display: inline-block;
+      background: #6b7280;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      display: inline-block;
     }
-    
-    button { padding: 8px 12px; margin: 0 4px; cursor: pointer; border: none; border-radius: 4px; }
-    .replyBtn { background: #2196F3; color: white; }
-    .deleteBtn { background: #f44336; color: white; }
-    #logout { background: #ff9800; color: white; float: right; }
-    #searchInput { padding: 10px; width: 350px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; }
-    #loading { text-align: center; padding: 30px; font-size: 18px; color: #666; }
+
+    button {
+      padding: 8px 12px;
+      margin: 0 4px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .replyBtn {
+      background: #2196F3;
+      color: white;
+    }
+
+    .deleteBtn {
+      background: #f44336;
+      color: white;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 60px;
+      font-size: 20px;
+      color: #94a3b8;
+    }
+
+    /* Modal */
+    #messageModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 700px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    #closeModal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: #ffd700;
+      cursor: pointer;
+    }
+
+    .modal-content h3 {
+      color: #ffd700;
+      margin-top: 0;
+    }
+
+    .modal-content p {
+      margin: 12px 0;
+    }
+
+    .modal-content #mMessage {
+      background: #1e293b;
+      padding: 16px;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
   </style>
 </head>
 <body>
 
-<h2>Messages Dashboard</h2>
-<button id="logout">Logout</button>
-<br><br>
-<input type="text" id="searchInput" placeholder="Search by name, email, or subject...">
+  <div class="container">
+    <header>
+      <h2>Messages Dashboard</h2>
+      <button id="logout">Logout</button>
+    </header>
 
-<div id="loading">Loading messages, please wait...</div>
+    <input type="text" id="searchInput" placeholder="Search by name, email, or subject...">
 
-<table style="display: none;">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Subject</th>
-      <th>Message</th>
-      <th>Status</th>
-      <th>Action</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody id="messages"></tbody>
-</table>
+    <div id="loading">Loading messages...</div>
 
-<!-- Modal -->
-<div id="messageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:100;">
-  <div style="background:white; max-width:700px; margin:50px auto; padding:30px; border-radius:10px; position:relative;">
-    <button id="closeModal" style="position:absolute; top:10px; right:15px; font-size:24px; background:none; border:none; cursor:pointer;">×</button>
-    <h3 id="mSubject" style="margin-top:0; color:#4CAF50;"></h3>
-    <p><b>Name:</b> <span id="mName"></span></p>
-    <p><b>Email:</b> <span id="mEmail"></span></p>
-    <p><b>Message:</b></p>
-    <p id="mMessage" style="background:#f2f2f2; padding:15px; border-radius:5px;"></p>
-    <p style="color:gray; font-size:13px;">Received: <span id="mDate"></span></p>
+    <table style="display: none;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Status</th>
+          <th>Action</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="messages"></tbody>
+    </table>
   </div>
-</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <!-- Modal -->
+  <div id="messageModal">
+    <div class="modal-content">
+      <button id="closeModal">×</button>
+      <h3 id="mSubject"></h3>
+      <p><b>Name:</b> <span id="mName"></span></p>
+      <p><b>Email:</b> <span id="mEmail"></span></p>
+      <p><b>Message:</b></p>
+      <p id="mMessage"></p>
+      <p style="color:#94a3b8; font-size:14px;">Received: <span id="mDate"></span></p>
+    </div>
+  </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyA4t8qqUiO7KqgeRNKQlMINmKum1if9sFM",
-    authDomain: "elegant-revolution.firebaseapp.com",
-    projectId: "elegant-revolution",
-    storageBucket: "elegant-revolution.firebasestorage.app",
-    messagingSenderId: "775296660246",
-    appId: "1:775296660246:web:d24fdc77e6dd7c227c1637",
-    measurementId: "G-Q6BNJ57JB6"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4t8qqUiO7KqgeRNKQlMINmKum1if9sFM",
+      authDomain: "elegant-revolution.firebaseapp.com",
+      projectId: "elegant-revolution",
+      storageBucket: "elegant-revolution.firebasestorage.app",
+      messagingSenderId: "775296660246",
+      appId: "1:775296660246:web:d24fdc77e6dd7c227c1637",
+      measurementId: "G-Q6BNJ57JB6"
+    };
 
-  const modal = document.getElementById("messageModal");
-  const loading = document.getElementById("loading");
-  const table = document.querySelector("table");
-  let allMessages = [];
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  document.getElementById("closeModal").onclick = () => modal.style.display = "none";
-  window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    const modal = document.getElementById("messageModal");
+    const loading = document.getElementById("loading");
+    const table = document.querySelector("table");
+    let allMessages = [];
 
-  function openModal(data) {
-    document.getElementById("mName").innerText = data.name || "N/A";
-    document.getElementById("mEmail").innerText = data.email || "N/A";
-    document.getElementById("mSubject").innerText = data.subject || "(No subject)";
-    document.getElementById("mMessage").innerText = data.message || "(No message)";
-    document.getElementById("mDate").innerText = data.createdAt?.toDate().toLocaleString() || "Unknown";
-    modal.style.display = "block";
-  }
+    document.getElementById("closeModal").onclick = () => modal.style.display = "none";
+    modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 
-  function renderMessages(messages) {
-    const tbody = document.getElementById("messages");
-    tbody.innerHTML = "";
-    loading.style.display = "none";
-    table.style.display = "table";
-
-    if (messages.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:gray;">No messages found</td></tr>`;
-      return;
+    function openModal(data) {
+      document.getElementById("mName").innerText = data.name || "N/A";
+      document.getElementById("mEmail").innerText = data.email || "N/A";
+      document.getElementById("mSubject").innerText = data.subject || "(No subject)";
+      document.getElementById("mMessage").innerText = data.message || "(No message)";
+      document.getElementById("mDate").innerText = data.createdAt?.toDate().toLocaleString() || "Unknown";
+      modal.style.display = "flex";
     }
 
-    messages.forEach(item => {
-      const d = item;
+    function renderMessages(messages) {
+      const tbody = document.getElementById("messages");
+      tbody.innerHTML = "";
+      loading.style.display = "none";
+      table.style.display = "table";
 
-      // Sab variables alag se calculate kar rahe hain taake koi galti na ho
-      const name = d.name || "";
-      const email = d.email || "";
-      const subject = d.subject || "";
-      const fullMessage = d.message || "";
-      const shortMessage = fullMessage.substring(0, 60) + (fullMessage.length > 60 ? "..." : "");
-      const date = d.createdAt?.toDate().toLocaleString() || "";
+      if (messages.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:60px; color:#94a3b8; font-size:18px;">No messages found</td></tr>`;
+        return;
+      }
 
-      const status = (d.status || "new").toLowerCase();
-      const isRead = status === "read";
-      const statusClass = isRead ? "status-read" : "status-unread";
-      const statusText = isRead ? "Read" : "Unread";
+      messages.forEach(item => {
+        const d = item;
+        const status = (d.status || "new").toLowerCase();
+        const isNew = status !== "read";
+        const statusClass = isNew ? "status-new" : "status-read";
+        const statusText = isNew ? "New" : "Read";
 
-      // Row create
-      const tr = document.createElement("tr");
+        const shortMessage = (d.message || "").substring(0, 60) + (d.message?.length > 60 ? "..." : "");
 
-      // Properly safe innerHTML with calculated variables
-      tr.innerHTML = `
-        <td>${name}</td>
-        <td>${email}</td>
-        <td>${subject}</td>
-        <td>${shortMessage}</td>
-        <td><span class="\( {statusClass}"> \){statusText}</span></td>
-        <td>
-          <button class="replyBtn">✉️ Reply</button>
-          <button class="deleteBtn">🗑️ Delete</button>
-        </td>
-        <td>${date}</td>
-      `;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${d.name || ""}</td>
+          <td>${d.email || ""}</td>
+          <td>${d.subject || ""}</td>
+          <td>${shortMessage}</td>
+          <td><span class="\( {statusClass}"> \){statusText}</span></td>
+          <td>
+            <button class="replyBtn">✉️ Reply</button>
+            <button class="deleteBtn">🗑️ Delete</button>
+          </td>
+          <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
+        `;
 
-      // Reply button
-      tr.querySelector(".replyBtn").onclick = (e) => {
-        e.stopPropagation();
-        const mailSubject = encodeURIComponent("Re: " + subject);
-        const mailBody = encodeURIComponent(`Hello \( {name},\n\nThank you for your message:\n" \){fullMessage}"\n\nWe will reply soon.\n\nBest,\nElrevo Team`);
-        window.open(`mailto:\( {email}?subject= \){mailSubject}&body=${mailBody}`);
-      };
+        tr.querySelector(".replyBtn").onclick = (e) => {
+          e.stopPropagation();
+          const subject = encodeURIComponent("Re: " + (d.subject || "Your Message"));
+          const body = encodeURIComponent(`Hello \( {d.name || "there"},\n\nThank you for contacting us.\nYour message: " \){d.message || ""}"\n\nWe will get back to you soon.\n\nBest regards,\nElrevo Team`);
+          window.open(`mailto:\( {d.email}?subject= \){subject}&body=${body}`);
+        };
 
-      // Delete button
-      tr.querySelector(".deleteBtn").onclick = async (e) => {
-        e.stopPropagation();
-        if (confirm("Delete this message?")) {
-          try {
-            await deleteDoc(doc(db, "contacts", d.id));
-            alert("Deleted ✅");
-            loadMessages();
-          } catch (err) {
-            alert("Delete failed ❌");
+        tr.querySelector(".deleteBtn").onclick = async (e) => {
+          e.stopPropagation();
+          if (confirm("Delete this message permanently?")) {
+            try {
+              await deleteDoc(doc(db, "contacts", d.id));
+              alert("Message deleted!");
+              loadMessages();
+            } catch (err) {
+              alert("Delete failed");
+            }
           }
-        }
-      };
+        };
 
-      // Row click - open modal + mark as read
-      tr.onclick = async () => {
-        openModal(d);
-        if (!isRead) {
-          try {
-            await updateDoc(doc(db, "contacts", d.id), { status: "read" });
-            loadMessages(); // refresh to show "Read"
-          } catch (err) {
-            console.error(err);
+        tr.onclick = async () => {
+          openModal(d);
+          if (isNew) {
+            try {
+              await updateDoc(doc(db, "contacts", d.id), { status: "read" });
+              loadMessages();
+            } catch (err) {}
           }
-        }
-      };
+        };
 
-      tbody.appendChild(tr);
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function loadMessages() {
+      try {
+        const q = query(collection(db, "contacts"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        allMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderMessages(allMessages);
+      } catch (error) {
+        loading.innerHTML = "❌ Failed to load messages";
+        console.error(error);
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "admin.html";
+      } else {
+        loadMessages();
+      }
     });
-  }
 
-  async function loadMessages() {
-    try {
-      const q = query(collection(db, "contacts"), orderBy("createdAt", "desc"));
-      const snapshot = await getDocs(q);
-      allMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderMessages(allMessages);
-    } catch (error) {
-      loading.innerHTML = "❌ Error loading messages";
-      console.error(error);
-    }
-  }
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allMessages.filter(m =>
+        (m.name || "").toLowerCase().includes(term) ||
+        (m.email || "").toLowerCase().includes(term) ||
+        (m.subject || "").toLowerCase().includes(term)
+      );
+      renderMessages(filtered);
+    });
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "admin.html";
-    } else {
-      loadMessages();
-    }
-  });
-
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    const term = e.target.value.toLowerCase();
-    const filtered = allMessages.filter(m => 
-      (m.name || "").toLowerCase().includes(term) ||
-      (m.email || "").toLowerCase().includes(term) ||
-      (m.subject || "").toLowerCase().includes(term)
-    );
-    renderMessages(filtered);
-  });
-
-  document.getElementById("logout").onclick = async () => {
-    try {
-      await signOut(auth);
-      alert("Logged out!");
-      window.location.href = "admin.html";
-    } catch (err) {
-      alert("Logout failed");
-    }
-  };
-</script>
+    document.getElementById("logout").onclick = async () => {
+      try {
+        await signOut(auth);
+        alert("Logged out successfully!");
+        window.location.href = "admin.html";
+      } catch (err) {
+        alert("Logout failed");
+      }
+    };
+  </script>
 
 </body>
 </html>
