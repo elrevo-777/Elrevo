@@ -1,20 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #f4f4f4; }
+    .new { color: green; font-weight: bold; }
+    .read { color: gray; }
+    button { padding: 6px 10px; cursor: pointer; }
+  </style>
 </head>
 <body>
 
-<h2>Welcome Admin</h2>
-<p>Ye page sirf login ke baad open hota hai</p>
-
+<h2>Messages Dashboard</h2>
 <button id="logout">Logout</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Subject</th>
+      <th>Message</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody id="messages"></tbody>
+</table>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from
+  "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, orderBy } from
+  "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+// 🔥 SAME CONFIG (jo tumne CDN se liya)
 const firebaseConfig = {
     apiKey: "AIzaSyA4t8qqUiO7KqgeRNKQlMINmKum1if9sFM",
     authDomain: "elegant-revolution.firebaseapp.com",
@@ -27,13 +52,47 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // 🔒 PAGE PROTECTION
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "admin.html";
+  } else {
+    loadMessages();
   }
 });
+
+// 📥 LOAD MESSAGES
+async function loadMessages() {
+  const tbody = document.getElementById("messages");
+  tbody.innerHTML = "";
+
+  const q = query(
+    collection(db, "contacts"),
+    orderBy("createdAt", "desc")
+  );
+
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(doc => {
+    const d = doc.data();
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${d.name || ""}</td>
+      <td>${d.email || ""}</td>
+      <td>${d.subject || ""}</td>
+      <td>${d.message || ""}</td>
+      <td class="${d.status === 'new' ? 'new' : 'read'}">
+        ${d.status || ""}
+      </td>
+      <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
 
 // 🚪 LOGOUT
 document.getElementById("logout").addEventListener("click", async () => {
