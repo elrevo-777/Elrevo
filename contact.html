@@ -1,108 +1,375 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact — Elrevo</title>
+
+  <!-- Favicon -->
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --dark: #1a1a1a;
+      --gray: #666;
+      --light-gray: #f8f8f8;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: var(--white);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header with Hamburger Menu */
+    .site-header {
+      padding: 25px 0;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand img {
+      height: 50px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 35px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid #eee;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 30px 20px;
+        gap: 25px;
+      }
+      .nav.nav-open { display: flex; }
+      .menu-toggle { display: block; }
+    }
+
+    /* Contact Page */
+    .section {
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .section-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 54px;
+      margin-bottom: 20px;
+    }
+
+    .section-header p {
+      font-size: 20px;
+      color: var(--gray);
+      max-width: 800px;
+      margin: 0 auto 80px;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-form {
+      background: var(--light-gray);
+      padding: 50px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .contact-form label {
+      display: block;
+      text-align: left;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .contact-form button {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 600;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 20px;
+    }
+
+    .contact-form button:hover {
+      background: #c19a2f;
+      transform: translateY(-3px);
+    }
+
+    .contact-form button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .contact-info {
+      text-align: left;
+      padding: 40px 0;
+    }
+
+    .contact-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+
+    .contact-info p {
+      font-size: 18px;
+      color: var(--gray);
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    /* Mobile */
+    @media (max-width: 992px) {
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
+      .contact-info {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section-header h1 { font-size: 44px; }
+      .contact-form {
+        padding: 30px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="site-header"></div>
+
+  <!-- Header with Hamburger Menu -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/logo.svg" alt="Elrevo">
+      </a>
+
+      <nav class="nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="collections.html">Collections</a>
+        <a href="shop.html">Shop</a>
+        <a href="lookbook.html">Lookbook</a>
+        <a href="blog.html">Journal</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+  </header>
 
   <main class="container section">
     <header class="section-header">
       <h1>Contact</h1>
-      <p>Need assistance? Our team is available Monday–Friday.</p>
+      <p>Need assistance? Our team is available Monday–Friday, 9am–6pm. We'll respond within 24 hours.</p>
     </header>
 
-    <div class="contact-grid">
+    <div class="contact-layout">
+      <!-- Contact Form -->
       <form id="contactForm" class="contact-form">
+        <label>Name
+          <input type="text" id="name" name="name" required placeholder="Your full name">
+        </label>
 
-  <label>Name
-    <input type="text" id="name" name="name" required>
-  </label>
+        <label>Email
+          <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </label>
 
-  <label>Email
-    <input type="email" id="email" name="email" required>
-  </label>
+        <label>Subject
+          <input type="text" id="subject" name="subject" placeholder="How can we help?">
+        </label>
 
-  <label>Subject
-    <input type="text" id="subject" name="subject">
-  </label>
+        <label>Message
+          <textarea id="message" name="message" rows="6" required placeholder="Write your message here..."></textarea>
+        </label>
 
-  <label>Message
-    <textarea id="message" name="message" rows="6" required></textarea>
-  </label>
+        <button class="btn" type="submit" id="submitBtn">Send Message</button>
+      </form>
 
-  <button class="btn" type="submit">Send Message</button>
-</form>
-
-
+      <!-- Contact Info -->
       <aside class="contact-info">
+        <h3>Customer Support</h3>
+        <p>info@elrevo.com<br>
+        +92 300 1234567 (WhatsApp available)</p>
+
         <h3>Visit Us</h3>
-        <p>Appointments by request.<br>info@elrevo.com</p>
+        <p>By appointment only.<br>
+        Lahore, Pakistan</p>
 
         <h3>Press & Partnerships</h3>
-        <p>info@elrevo.com</p>
+        <p>partnerships@elrevo.com</p>
+
+        <h3>Follow Us</h3>
+        <p>Instagram • Facebook • Pinterest</p>
       </aside>
     </div>
   </main>
 
-  <div id="site-footer"></div>
+  <!-- Firebase Script + Form Handling -->
   <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyA4t8qqUiO7KqgeRNKQlMINmKum1if9sFM",
-    authDomain: "elegant-revolution.firebaseapp.com",
-    projectId: "elegant-revolution",
-    storageBucket: "elegant-revolution.firebasestorage.app",
-    messagingSenderId: "775296660246",
-    appId: "1:775296660246:web:d24fdc77e6dd7c227c1637",
-    measurementId: "G-Q6BNJ57JB6"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4t8qqUiO7KqgeRNKQlMINmKum1if9sFM",
+      authDomain: "elegant-revolution.firebaseapp.com",
+      projectId: "elegant-revolution",
+      storageBucket: "elegant-revolution.firebasestorage.app",
+      messagingSenderId: "775296660246",
+      appId: "1:775296660246:web:d24fdc77e6dd7c227c1637",
+      measurementId: "G-Q6BNJ57JB6"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-const contactForm = document.getElementById("contactForm");
+    const contactForm = document.getElementById("contactForm");
+    const submitBtn = document.getElementById("submitBtn");
 
-if (contactForm) {
-  contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    if (contactForm) {
+      contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const subject = document.getElementById("subject").value;
-    const message = document.getElementById("message").value;
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const subject = document.getElementById("subject").value.trim();
+        const message = document.getElementById("message").value.trim();
 
-    try {
-      await addDoc(collection(db, "contacts"), {
-        name,
-        email,
-        subject,
-        message,
-        createdAt: serverTimestamp(),
-        status: "new"
+        // Loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+
+        try {
+          await addDoc(collection(db, "contacts"), {
+            name,
+            email,
+            subject: subject || "(No subject)",
+            message,
+            createdAt: serverTimestamp(),
+            status: "new"
+          });
+
+          alert("✅ Message sent successfully! We'll reply soon.");
+          contactForm.reset();
+        } catch (error) {
+          alert("❌ Something went wrong. Please try again.");
+          console.error("Contact form error:", error);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send Message";
+        }
       });
-
-      alert("Message sent successfully ✅");
-      contactForm.reset();
-    } catch (error) {
-      alert("Something went wrong ❌");
-      console.error(error);
     }
-  });
-}
-</script>
 
+    // Hamburger Menu
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('mobileNav');
+    if (menuBtn && nav) {
+      menuBtn.addEventListener('click', () => {
+        nav.classList.toggle('nav-open');
+        menuBtn.textContent = nav.classList.contains('nav-open') ? '×' : '☰';
+      });
+    }
   </script>
-  
+
 </body>
 </html>
