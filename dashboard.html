@@ -24,6 +24,12 @@
   placeholder="Search by name, email, subject..."
   style="padding:8px; width:300px;"
 >
+<input
+  type="text"
+  id="searchInput"
+  placeholder="Search by name, email, subject..."
+  style="padding:8px;width:100%;max-width:400px;margin-bottom:10px;"
+/>
 
 <table>
   <thead>
@@ -109,6 +115,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+  let allMessages = [];
+
 // 🔒 PAGE PROTECTION
 onAuthStateChanged(auth, (user) => {
   if (!user) {
@@ -129,6 +137,26 @@ async function loadMessages() {
   );
 
   const snapshot = await getDocs(q);
+  allMessages = [];
+snapshot.forEach(doc => {
+  allMessages.push({ id: doc.id, ...doc.data() });
+});
+
+renderMessages(allMessages);
+  
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+  const value = e.target.value.toLowerCase();
+
+  const filtered = allMessages.filter(m =>
+    m.name?.toLowerCase().includes(value) ||
+    m.email?.toLowerCase().includes(value) ||
+    m.subject?.toLowerCase().includes(value)
+  );
+
+  renderMessages(filtered);
+});
+
+
 
   snapshot.forEach(docSnap => {
   const d = docSnap.data();
