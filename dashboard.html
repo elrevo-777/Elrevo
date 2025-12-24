@@ -36,8 +36,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy } from
-  "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { 
+  getFirestore, 
+  collection, 
+  getDocs, 
+  query, 
+  orderBy,
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
 // 🔥 SAME CONFIG (jo tumne CDN se liya)
 const firebaseConfig = {
@@ -75,23 +83,37 @@ async function loadMessages() {
 
   const snapshot = await getDocs(q);
 
-  snapshot.forEach(doc => {
-    const d = doc.data();
-    const tr = document.createElement("tr");
+  snapshot.forEach(docSnap => {
+  const d = docSnap.data();
+  const tr = document.createElement("tr");
 
-    tr.innerHTML = `
-      <td>${d.name || ""}</td>
-      <td>${d.email || ""}</td>
-      <td>${d.subject || ""}</td>
-      <td>${d.message || ""}</td>
-      <td class="${d.status === 'new' ? 'new' : 'read'}">
-        ${d.status || ""}
-      </td>
-      <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
-    `;
+  tr.style.cursor = "pointer";
 
-    tbody.appendChild(tr);
+  tr.innerHTML = `
+    <td>${d.name || ""}</td>
+    <td>${d.email || ""}</td>
+    <td>${d.subject || ""}</td>
+    <td>${d.message || ""}</td>
+    <td class="${d.status === 'new' ? 'new' : 'read'}">
+      ${d.status || ""}
+    </td>
+    <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
+  `;
+
+  // 👇 CLICK = MARK AS READ
+  tr.addEventListener("click", async () => {
+    if (d.status !== "read") {
+      await updateDoc(
+        doc(db, "contacts", docSnap.id),
+        { status: "read" }
+      );
+      loadMessages(); // refresh list
+    }
   });
+
+  tbody.appendChild(tr);
+});
+
 }
 
 // 🚪 LOGOUT
