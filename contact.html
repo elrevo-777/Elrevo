@@ -274,6 +274,10 @@
           <input type="email" id="email" name="email" required placeholder="your@email.com">
         </label>
 
+        <label>Mobile Number
+          <input type="tel" id="mobile" name="mobile" placeholder="+92 300 1234567 (optional)">
+        </label>
+
         <label>Subject
           <input type="text" id="subject" name="subject" placeholder="How can we help?">
         </label>
@@ -285,14 +289,11 @@
         <button class="btn" type="submit" id="submitBtn">Send Message</button>
       </form>
 
-      <!-- Contact Info -->
+      <!-- Contact Info (Lahore/Visit Us removed) -->
       <aside class="contact-info">
         <h3>Customer Support</h3>
         <p>info@elrevo.com<br>
-
-        <h3>Visit Us</h3>
-        <p>By appointment only.<br>
-        Lahore, Pakistan</p>
+        +92 300 1234567 (WhatsApp available)</p>
 
         <h3>Press & Partnerships</h3>
         <p>partnerships@elrevo.com</p>
@@ -330,10 +331,10 @@
 
         const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
+        const mobile = document.getElementById("mobile").value.trim();
         const subject = document.getElementById("subject").value.trim();
         const message = document.getElementById("message").value.trim();
 
-        // Loading state
         submitBtn.disabled = true;
         submitBtn.textContent = "Sending...";
 
@@ -341,6 +342,7 @@
           await addDoc(collection(db, "contacts"), {
             name,
             email,
+            mobile: mobile || "(Not provided)",
             subject: subject || "(No subject)",
             message,
             createdAt: serverTimestamp(),
