@@ -19,16 +19,16 @@
 <button id="logout">Logout</button>
 
 <table>
-  <thead><th>Action</th>
-  
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Subject</th>
-      <th>Message</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Subject</th>
+    <th>Message</th>
+    <th>Status</th>
+    <th>Action</th>
+    <th>Date</th>
+  </tr>
   </thead>
   <tbody id="messages"></tbody>
 </table>
@@ -129,19 +129,36 @@ async function loadMessages() {
 
   tr.style.cursor = "pointer";
 
-  tr.innerHTML = '
-
+  tr.innerHTML = `
   <td>${d.name}</td>
   <td>${d.email}</td>
   <td>${d.subject}</td>
-  <td>${d.status}</td>
+  <td>${d.message || ""}</td>
+  <td class="${d.status}">${d.status}</td>
   <td>
     <button class="deleteBtn" data-id="${docSnap.id}">
       🗑️ Delete
     </button>
   </td>
-    <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
-  `;
+  <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
+`;
+const deleteBtn = tr.querySelector(".deleteBtn");
+
+deleteBtn.addEventListener("click", async (e) => {
+  e.stopPropagation(); // row click se modal na khule
+
+  if (!confirm("Delete this message?")) return;
+
+  try {
+    await deleteDoc(doc(db, "contacts", docSnap.id));
+    alert("Message deleted ✅");
+    loadMessages();
+  } catch (err) {
+    alert("Delete failed ❌");
+    console.error(err);
+  }
+});
+
 
   // 👇 CLICK = MARK AS READ
   tr.addEventListener("click", async () => {
