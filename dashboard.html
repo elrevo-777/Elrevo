@@ -36,7 +36,8 @@
     <th>Action</th>
     <th>Date</th>
   </tr>
-  </thead>
+</thead>
+
   <tbody id="messages"></tbody>
 </table>
   <!-- MESSAGE MODAL -->
@@ -170,6 +171,7 @@ renderMessages(allMessages);
   </td>
   <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
 `;
+
 const replyBtn = tr.querySelector(".replyBtn");
 
 replyBtn.addEventListener("click", (e) => {
