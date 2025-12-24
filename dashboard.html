@@ -136,12 +136,27 @@ async function loadMessages() {
   <td>${d.message || ""}</td>
   <td class="${d.status}">${d.status}</td>
   <td>
-    <button class="deleteBtn" data-id="${docSnap.id}">
-      🗑️ Delete
-    </button>
+    <button class="replyBtn">✉️ Reply</button>
+    <button class="deleteBtn">🗑️ Delete</button>
   </td>
   <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
 `;
+const replyBtn = tr.querySelector(".replyBtn");
+
+replyBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  const subject = encodeURIComponent("Re: " + d.subject);
+  const body = encodeURIComponent(
+    `Hello ${d.name},\n\nRegarding your message:\n"${d.message}"\n\nBest regards,\nElrevo Team`
+  );
+
+  window.open(
+    `mailto:${d.email}?subject=${subject}&body=${body}`,
+    "_blank"
+  );
+});
+    
 const deleteBtn = tr.querySelector(".deleteBtn");
 
 deleteBtn.addEventListener("click", async (e) => {
