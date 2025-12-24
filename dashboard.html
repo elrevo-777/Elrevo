@@ -19,7 +19,8 @@
 <button id="logout">Logout</button>
 
 <table>
-  <thead>
+  <thead><th>Action</th>
+  
     <tr>
       <th>Name</th>
       <th>Email</th>
@@ -127,13 +128,16 @@ async function loadMessages() {
   tr.style.cursor = "pointer";
 
   tr.innerHTML = `
-    <td>${d.name || ""}</td>
-    <td>${d.email || ""}</td>
-    <td>${d.subject || ""}</td>
-    <td>${d.message || ""}</td>
-    <td class="${d.status === 'new' ? 'new' : 'read'}">
-      ${d.status || ""}
-    </td>
+  <td>${d.name}</td>
+  <td>${d.email}</td>
+  <td>${d.subject}</td>
+  <td>${d.status}</td>
+  <td>
+    <button class="deleteBtn" data-id="${docSnap.id}">
+      🗑️ Delete
+    </button>
+  </td>
+`;
     <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
   `;
 
