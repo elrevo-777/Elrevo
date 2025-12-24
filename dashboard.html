@@ -178,61 +178,219 @@ replyBtn.addEventListener("click", (e) => {
   e.stopPropagation();
 
   const subject = encodeURIComponent("Re: " + d.subject);
-  const body = encodeURIComponent(
-    `Hello ${d.name},\n\nRegarding your message:\n"${d.message}"\n\nBest regards,\nElrevo Team`
-  );
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #f4f4f4; }
+    .new { color: green; font-weight: bold; }
+    .read { color: gray; }
+    button { padding: 6px 10px; cursor: pointer; margin: 2px; }
+  </style>
+</head>
+<body>
 
-  window.open(
-    `mailto:${d.email}?subject=${subject}&body=${body}`,
-    "_blank"
-  );
-});
-    
-const deleteBtn = tr.querySelector(".deleteBtn");
+<h2>Messages Dashboard</h2>
+<button id="logout">Logout</button>
+<br><br>
+<input
+  type="text"
+  id="searchInput"
+  placeholder="Search by name, email, subject..."
+  style="padding:8px; width:300px;"
+>
 
-deleteBtn.addEventListener("click", async (e) => {
-  e.stopPropagation(); // row click se modal na khule
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Subject</th>
+      <th>Message</th>
+      <th>Status</th>
+      <th>Action</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody id="messages"></tbody>
+</table>
 
-  if (!confirm("Delete this message?")) return;
+<!-- MESSAGE MODAL -->
+<div id="messageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6);">
+  <div style="background:#fff; max-width:600px; margin:10% auto; padding:20px; border-radius:8px; position:relative;">
+    <button id="closeModal" style="position:absolute; top:10px; right:10px;">X</button>
+    <h3 id="mSubject"></h3>
+    <p><b>Name:</b> <span id="mName"></span></p>
+    <p><b>Email:</b> <span id="mEmail"></span></p>
+    <p><b>Message:</b></p>
+    <p id="mMessage"></p>
+    <p id="mDate" style="font-size:12px;color:gray;"></p>
+  </div>
+</div>
 
-  try {
-    await deleteDoc(doc(db, "contacts", docSnap.id));
-    alert("Message deleted ✅");
-    loadMessages();
-  } catch (err) {
-    alert("Delete failed ❌");
-    console.error(err);
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { 
+    getFirestore, 
+    collection, 
+    getDocs, 
+    query, 
+    orderBy,
+    doc,
+    updateDoc,
+    deleteDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4t8qqUiO7KqgeRNKQlMINmKum1if9sFM",
+    authDomain: "elegant-revolution.firebaseapp.com",
+    projectId: "elegant-revolution",
+    storageBucket: "elegant-revolution.firebasestorage.app",
+    messagingSenderId: "775296660246",
+    appId: "1:775296660246:web:d24fdc77e6dd7c227c1637",
+    measurementId: "G-Q6BNJ57JB6"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const modal = document.getElementById("messageModal");
+  let allMessages = [];
+
+  // Modal functions
+  function openModal(data) {
+    document.getElementById("mName").innerText = data.name || "";
+    document.getElementById("mEmail").innerText = data.email || "";
+    document.getElementById("mSubject").innerText = data.subject || "";
+    document.getElementById("mMessage").innerText = data.message || "";
+    document.getElementById("mDate").innerText = 
+      data.createdAt?.toDate().toLocaleString() || "";
+    modal.style.display = "block";
   }
-});
 
+  document.getElementById("closeModal").onclick = () => {
+    modal.style.display = "none";
+  };
 
-  // 👇 CLICK = MARK AS READ
-  tr.addEventListener("click", async () => {
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
 
-  // 1️⃣ Modal open
-  openModal(d);
+  // Render messages in table
+  function renderMessages(messages) {
+    const tbody = document.getElementById("messages");
+    tbody.innerHTML = "";
 
-  // 2️⃣ Mark as read
-  if (d.status !== "read") {
-    await updateDoc(
-      doc(db, "contacts", docSnap.id),
-      { status: "read" }
+    if (messages.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:gray;">No messages found</td></tr>`;
+      return;
+    }
+
+    messages.forEach(item => {
+      const d = item; // data
+      const tr = document.createElement("tr");
+      tr.style.cursor = "pointer";
+
+      tr.innerHTML = `
+        <td>${d.name || ""}</td>
+        <td>${d.email || ""}</td>
+        <td>${d.subject || ""}</td>
+        <td>\( {(d.message || "").substring(0, 50)} \){d.message?.length > 50 ? "..." : ""}</td>
+        <td class="\( {d.status || 'new'}"> \){d.status || 'new'}</td>
+        <td>
+          <button class="replyBtn">✉️ Reply</button>
+          <button class="deleteBtn">🗑️ Delete</button>
+        </td>
+        <td>${d.createdAt?.toDate().toLocaleString() || ""}</td>
+      `;
+
+      // Reply button
+      tr.querySelector(".replyBtn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const subject = encodeURIComponent("Re: " + (d.subject || ""));
+        const body = encodeURIComponent(
+          `Hello \( {d.name || ""},\n\nRegarding your message:\n" \){d.message || ""}"\n\nBest regards,\nElrevo Team`
+        );
+        window.open(`mailto:\( {d.email}?subject= \){subject}&body=${body}`, "_blank");
+      });
+
+      // Delete button
+      tr.querySelector(".deleteBtn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (!confirm("Delete this message?")) return;
+        try {
+          await deleteDoc(doc(db, "contacts", d.id));
+          alert("Message deleted ✅");
+          loadMessages(); // reload
+        } catch (err) {
+          alert("Delete failed ❌");
+          console.error(err);
+        }
+      });
+
+      // Row click → open modal + mark as read
+      tr.addEventListener("click", async () => {
+        openModal(d);
+        if (d.status !== "read") {
+          await updateDoc(doc(db, "contacts", d.id), { status: "read" });
+          loadMessages(); // refresh to update status
+        }
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Load messages from Firestore
+  async function loadMessages() {
+    try {
+      const q = query(collection(db, "contacts"), orderBy("createdAt", "desc"));
+      const snapshot = await getDocs(q);
+      
+      allMessages = [];
+      snapshot.forEach(doc => {
+        allMessages.push({ id: doc.id, ...doc.data() });
+      });
+
+      renderMessages(allMessages);
+    } catch (err) {
+      console.error("Error loading messages:", err);
+      alert("Failed to load messages");
+    }
+  }
+
+  // Page protection
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "admin.html";
+    } else {
+      loadMessages();
+    }
+  });
+
+  // Search functionality
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    const value = e.target.value.toLowerCase();
+    const filtered = allMessages.filter(m =>
+      (m.name?.toLowerCase() || "").includes(value) ||
+      (m.email?.toLowerCase() || "").includes(value) ||
+      (m.subject?.toLowerCase() || "").includes(value)
     );
-    loadMessages();
-  }
-});
+    renderMessages(filtered);
+  });
 
-
-  tbody.appendChild(tr);
-});
-
-}
-
-// 🚪 LOGOUT
-document.getElementById("logout").addEventListener("click", async () => {
-  await signOut(auth);
-  window.location.href = "admin.html";
-});
+  // Logout
+  document.getElementById("logout").addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "admin.html";
+  });
 </script>
 
 </body>
