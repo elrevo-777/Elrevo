@@ -51,6 +51,8 @@
 
 <script type="module">
   const modal = document.getElementById("messageModal");
+  import { deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  
 
 function openModal(data) {
   document.getElementById("mName").innerText = data.name || "";
@@ -128,6 +130,23 @@ async function loadMessages() {
   tr.style.cursor = "pointer";
 
   tr.innerHTML = `
+  const deleteBtn = tr.querySelector(".deleteBtn");
+
+deleteBtn.addEventListener("click", async (e) => {
+  e.stopPropagation(); // row click stop
+
+  if (!confirm("Are you sure you want to delete this message?")) return;
+
+  try {
+    await deleteDoc(doc(db, "contacts", docSnap.id));
+    alert("Message deleted ✅");
+    loadMessages();
+  } catch (err) {
+    alert("Delete failed ❌");
+    console.error(err);
+  }
+});
+
   <td>${d.name}</td>
   <td>${d.email}</td>
   <td>${d.subject}</td>
