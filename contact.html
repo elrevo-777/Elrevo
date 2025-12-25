@@ -14,6 +14,9 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- reCAPTCHA Script (head mein daal diya) -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
   <style>
     :root {
       --gold: #d4af37;
@@ -213,6 +216,18 @@
       line-height: 1.8;
     }
 
+    /* reCAPTCHA styling */
+    .recaptcha-container {
+      margin: 30px 0;
+    }
+
+    #captchaError {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+
     /* Mobile */
     @media (max-width: 992px) {
       .contact-layout {
@@ -264,7 +279,7 @@
     </header>
 
     <div class="contact-layout">
-      <!-- Contact Form -->
+      <!-- Contact Form with reCAPTCHA -->
       <form id="contactForm" class="contact-form">
         <label>Name
           <input type="text" id="name" name="name" required placeholder="Your full name">
@@ -286,14 +301,19 @@
           <textarea id="message" name="message" rows="6" required placeholder="Write your message here..."></textarea>
         </label>
 
+        <!-- reCAPTCHA Widget -->
+        <div class="recaptcha-container">
+          <div class="g-recaptcha" data-sitekey="6LeIxTYsAAAAAJjD2VJLinmwrHTE2LKASvLA54II"></div>
+          <p id="captchaError">Please verify that you are not a robot.</p>
+        </div>
+
         <button class="btn" type="submit" id="submitBtn">Send Message</button>
       </form>
 
-      <!-- Contact Info (Lahore/Visit Us removed) -->
+      <!-- Contact Info -->
       <aside class="contact-info">
         <h3>Customer Support</h3>
         <p>info@elrevo.com<br>
-        +92 300 1234567 (WhatsApp available)</p>
 
         <h3>Press & Partnerships</h3>
         <p>partnerships@elrevo.com</p>
@@ -304,7 +324,7 @@
     </div>
   </main>
 
-  <!-- Firebase Script + Form Handling -->
+  <!-- Firebase + reCAPTCHA Validation Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -324,10 +344,20 @@
 
     const contactForm = document.getElementById("contactForm");
     const submitBtn = document.getElementById("submitBtn");
+    const captchaError = document.getElementById("captchaError");
 
     if (contactForm) {
       contactForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // reCAPTCHA check
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+          captchaError.style.display = "block";
+          return;
+        } else {
+          captchaError.style.display = "none";
+        }
 
         const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
@@ -351,9 +381,11 @@
 
           alert("✅ Message sent successfully! We'll reply soon.");
           contactForm.reset();
+          grecaptcha.reset(); // captcha reset
         } catch (error) {
           alert("❌ Something went wrong. Please try again.");
           console.error("Contact form error:", error);
+          grecaptcha.reset();
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = "Send Message";
